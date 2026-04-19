@@ -23,7 +23,6 @@ Instead of calling clients at random, the bank wants to identify which clients a
 - `data/bank-additional-full.csv`: main dataset used in the notebook
 - `data/bank-additional.csv`: smaller sample dataset
 - `data/bank-additional-names.txt`: feature descriptions
-- `CRISP-DM-BANK.pdf`: paper used for context
 
 ## Concise Workflow
 
@@ -252,6 +251,15 @@ This is the main business value of the project: the model turns broad outreach i
 
 At the same time, the current threshold does not capture all potential subscribers. On the test set, the model reaches about `642` of roughly `928` actual subscribers, which means about `286` potential clients are still missed. That is why the model should be viewed as a ranking tool rather than a perfect yes/no rule.
 
+## Findings and Actionable Insights
+
+- The current tuned logistic regression model is a practical choice for campaign support because it improves expected successful calls substantially relative to random calling.
+- The model should be used to rank customers by predicted likelihood of success, rather than as a rigid yes/no decision rule.
+- If the bank wants to reduce wasted calls, it should contact the highest-ranked customers first.
+- If the bank wants to capture more subscribers, it should lower the calling threshold and accept a lower hit rate.
+- The current setup still misses about `286` potential subscribers on the test set, so campaign managers should treat the model as a prioritization tool, not a complete filter.
+- The final operating threshold should be chosen only after comparing the cost of each call with the expected profit from a successful subscription.
+
 ## Ranking and Campaign Economics
 
 The model produces a probability score for each customer, so customers can be ranked from most likely to least likely to subscribe. In practice, this is often more useful than treating the output as a simple binary decision.
@@ -300,6 +308,13 @@ For business use, the tuned logistic regression model is the strongest choice in
 - it is easier to explain than KNN or SVM
 - it clearly outperforms random calling in expected successful calls
 - it gives a probability-based ranking that can be matched to campaign budget and business constraints
+
+## Next Steps
+
+1. Test several probability cutoffs and compare how many calls, successes, and missed subscribers each cutoff produces.
+2. Add a profit-based decision rule that weighs call cost against the value of a successful subscription.
+3. Validate the selected model on a future time period to confirm that performance is stable over time.
+4. Re-run the reduced-feature experiment if model simplicity becomes more important than a small drop in precision.
 
 ## How to Reproduce
 
